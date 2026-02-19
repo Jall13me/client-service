@@ -1,0 +1,219 @@
+openapi: 3.0.3
+info:
+  title: Cliente Service API
+  version: 1.1.0
+  description: Microservicio encargado de la gestion de clientes
+
+servers:
+  - url: http://localhost:8081
+
+paths:
+  /clientes:
+
+    post:
+      summary: Crear cliente
+      tags: [ Clientes ]
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClienteRequest'
+
+      responses:
+        '201':
+          description: Cliente creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClienteResponse'
+
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    get:
+      summary: Listar todos los clientes
+      tags: [ Clientes ]
+      responses:
+        '200':
+          description: Lista de clientes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClienteResponse'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /clientes/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+
+    get:
+      summary: Obtener cliente por ID
+      tags: [ Clientes ]
+      responses:
+        '200':
+          description: Cliente encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClienteResponse'
+
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+
+    put:
+      summary: Actualizar cliente completo
+      tags: [ Clientes ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClienteRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClienteResponse'
+          description: Cliente actualizado
+
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+
+    patch:
+      summary: Actualización parcial
+      tags: [ Clientes ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClienteRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClienteResponse'
+          description: Cliente Actualizado
+
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+
+    delete:
+      summary: Eliminar cliente
+      tags: [ Clientes ]
+      responses:
+        '204':
+          description: Eliminado correctamente
+
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+
+
+
+components:
+  schemas:
+
+    ClienteRequest:
+      type: object
+      required:
+        - nombre
+        - email
+      properties:
+        nombre:
+          type: string
+          example: Jose
+        email:
+          type: string
+          example: jose@gmail.com
+
+
+    ClienteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        nombre:
+          type: string
+        email:
+          type: string
+
+
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          example: 2026-02-09T15:10:00
+        status:
+          type: integer
+          example: 404
+        error:
+          type: string
+          example: NOT_FOUND
+        message:
+          type: string
+          example: Cliente no encontrado
+        path:
+          type: string
+          example: /clientes/5
+
+
+  responses:
+
+    BadRequest:
+      description: Datos inválidos o mal formados
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    NotFound:
+      description: Recurso no encontrado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    Conflict:
+      description: Conflicto de datos (duplicado)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    InternalServerError:
+      description: Error interno del servidor
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
