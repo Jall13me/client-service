@@ -1,11 +1,13 @@
 package com.micro.client.exception;
 
-public class ClientNotFoundException extends  RuntimeException {
+import lombok.Getter;
 
-    public ClientNotFoundException(Long id) {
-        super("Cliente con " + id + " no encontrado");
+@Getter
+public class ClientNotFoundException extends  RuntimeException {
+    private final Long clientId;
+    public ClientNotFoundException(Long clientId) {
+        super(String.valueOf((clientId)));
+        this.clientId = clientId;
     }
-    public ClientNotFoundException(String message) {
-        super(message);
-    }
+
 }

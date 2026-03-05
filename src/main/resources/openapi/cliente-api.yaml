@@ -3,7 +3,6 @@ info:
   title: Cliente Service API
   version: 1.1.0
   description: Microservicio encargado de la gestion de clientes
-
 servers:
   - url: http://localhost:8081
 

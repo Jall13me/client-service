@@ -1,8 +1,6 @@
 package com.micro.client.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Setter
@@ -12,12 +10,12 @@ import lombok.*;
 @Builder
 public class ClientRequest {
 
-    @NotBlank(message = "El nombre es obligatorio")
-    @Size(max = 100, message = "El nombre no puede contener mas de 100 caracteres")
+    @NotBlank(message = "{validation.name.required}")
+    @Size(max = 100, message = "{validation.name.size}")
     private String name;
 
-    @NotBlank(message = "El email es obligatorio")
-    @Email(message = "El email debe ser valido")
-    @Size(max = 150 , message = "El email no puede exceder de 150 caracteres")
+    @NotBlank(message = "{validation.email.required}")
+    @Email(message = "{validation.email.invalid}")
+    @Size(max = 150 , message = "{validation.email.size}")
     private String email;
 }
